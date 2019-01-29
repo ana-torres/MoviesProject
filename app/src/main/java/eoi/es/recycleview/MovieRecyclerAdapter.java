@@ -16,11 +16,18 @@ import java.util.ArrayList;
 import eoi.es.recycleview.data.api.RestClient;
 import eoi.es.recycleview.data.entity.Movie;
 
-public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdapter.MovieViewHolder> {
+public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdapter.MovieViewHolder> implements View.OnClickListener {
 
     Context context;
     int resource;
     ArrayList<Movie> movies;
+
+    //Manejador del evento de pulsación
+    View.OnClickListener listener;
+
+    public void setListener(View.OnClickListener listener) {
+        this.listener = listener;
+    }
 
     public MovieRecyclerAdapter(Context context, int resource, ArrayList<Movie> movies) {
         this.context = context;
@@ -53,13 +60,20 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
     public void onBindViewHolder(@NonNull MovieViewHolder movieViewHolder, int position) {
 
         Movie movie = movies.get(position);
-        movieViewHolder.bindMovie(movie);
+        movieViewHolder.bindMovie(movie, listener);
 
     }
 
     @Override
     public int getItemCount() {
         return movies.size();
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (listener != null) {
+            listener.onClick(view);
+        }
     }
 
     //Clase interna al adapter que representa a un viewHolder
@@ -85,13 +99,15 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
          * @param movie película
          */
 
-        public void bindMovie(Movie movie) {
+        public void bindMovie(Movie movie, View.OnClickListener listener) {
             tvTitle.setText(movie.getTitle());
             String genreAndText = movie.getYear();
             tvGenreAndYear.setText(genreAndText);
 
             String url = RestClient.imageBaseUrl + movie.getCoverUrl();
             Glide.with(context).load(url).into(ivCover);
+
+            itemView.setOnClickListener(listener);
         }
     }
 }

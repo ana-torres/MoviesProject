@@ -1,7 +1,6 @@
 package eoi.es.recycleview.data.api.mapper;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import eoi.es.recycleview.data.dto.MovieDTO;
@@ -22,7 +21,7 @@ public class MovieMapper {
 
         List<Movie> entities = new ArrayList<>();
         for (MovieDTO dto : dtoList) {
-            entities.add(entityFrom(dto).getYear(Calendar.YEAR);
+            entities.add(entityFrom(dto));
         }
 
         return entities;
@@ -33,6 +32,7 @@ public class MovieMapper {
         entity.setTitle(dto.getTitle());
         entity.setCoverUrl(dto.getPoster_path());
         entity.setYear(dto.getRelease_date());
+        entity.setId(dto.getId());
 
         return entity;
     }

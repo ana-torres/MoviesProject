@@ -1,24 +1,32 @@
 package eoi.es.recycleview.data.entity;
 
-import java.util.Calendar;
+import java.io.Serializable;
 
-public class Movie {
+public class Movie implements Serializable {
 
+    Long id;
     String title;
     String director;
     String genre;
     String description;
     String coverUrl;
-    Calendar year;
+    String year;
 
-    public Calendar getYear() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getYear() {
         return year;
     }
 
-    public void setYear(Calendar year) {
+    public void setYear(String year) {
         this.year = year;
     }
-
 
     public String getTitle() {
         return title;
@@ -59,12 +67,5 @@ public class Movie {
     public void setCoverUrl(String coverUrl) {
         this.coverUrl = coverUrl;
     }
-/*
-    public String getYear() {
-        return year;
-    }
 
-    public void setYear(String year) {
-        this.year = year;
-    }*/
 }
