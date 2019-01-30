@@ -2,6 +2,7 @@ package eoi.es.recycleview.scenes.movielist;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +23,9 @@ public class MoviesListActivity extends AppCompatActivity {
     RecyclerView rvMovies;
     ArrayList<Movie> movies = new ArrayList<>();
     MovieRecyclerAdapter adapter;
+    Integer pageTotalItem;
+    int actualPage = 0;
+    boolean isLoading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,17 +62,51 @@ public class MoviesListActivity extends AppCompatActivity {
 
         //El layout manager le dice al RV cómo se tiene que pintar de forma lineal
 
-        GridLayoutManager manager = new GridLayoutManager(this, 2);
+        final GridLayoutManager manager = new GridLayoutManager(this, 2);
         rvMovies.setLayoutManager(manager);
         rvMovies.setAdapter(adapter);
+        rvMovies.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                //int visibleItemCount = manager.getChildCount();
+                int totalItemCount = manager.getItemCount();
+                //int firstVisibleItemPosition = manager.findFirstVisibleItemPosition();
+                int lastCompleteVisibleItemPosition = manager.findLastCompletelyVisibleItemPosition();
+
+                int actualPageRes = lastCompleteVisibleItemPosition / pageTotalItem;
+                actualPageRes++;
+
+                if (isLoading == false && lastCompleteVisibleItemPosition == (totalItemCount - 3)) {
+                    loadData();
+                }
+
+            }
+        });
     }
 
     private void loadData() {
-        MoviesListManager.getMovieList(1, new BusinessCallback<List<Movie>>() {
+
+        isLoading = true;
+        actualPage++;
+
+        MoviesListManager.getMovieList(actualPage, new BusinessCallback<List<Movie>>() {
             @Override
             public void success(List<Movie> moviesFromManager) {
+
+                if (actualPage == 1) {
+                    pageTotalItem = moviesFromManager.size();
+                }
+
                 movies.addAll(moviesFromManager);
                 adapter.notifyDataSetChanged();
+                isLoading = false;
             }
 
             @Override
