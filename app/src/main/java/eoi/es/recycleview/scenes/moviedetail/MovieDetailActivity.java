@@ -108,6 +108,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         tvGenreAndYear.setText(movie.getYear());
         String url = RestClient.imageBaseUrl + movie.getCoverUrl();
         Glide.with(this).load(url).into(ivCover);
+        tvDescription.setText(movie.getDescription());
     }
 
     private void initView() {

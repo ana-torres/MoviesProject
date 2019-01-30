@@ -33,6 +33,7 @@ public class MovieMapper {
         entity.setCoverUrl(dto.getPoster_path());
         entity.setYear(dto.getRelease_date());
         entity.setId(dto.getId());
+        entity.setDescription(dto.getOverview());
 
         return entity;
     }

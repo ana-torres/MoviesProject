@@ -6,6 +6,7 @@ public class MovieDTO {
     String title;
     String poster_path;
     String release_date;
+    String overview;
 
     public Long getId() {
         return id;
@@ -39,5 +40,11 @@ public class MovieDTO {
         this.poster_path = poster_path;
     }
 
+    public String getOverview() {
+        return overview;
+    }
 
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
 }
