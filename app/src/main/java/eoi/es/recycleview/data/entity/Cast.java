@@ -1,6 +1,8 @@
 package eoi.es.recycleview.data.entity;
 
-public class Cast {
+import java.io.Serializable;
+
+public class Cast implements Serializable {
 
     String name;
     String profileImageUrl;
